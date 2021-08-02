@@ -2,6 +2,7 @@
 
 namespace DocteurKlein;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -37,7 +38,7 @@ final class RepositoryServiceBundle extends Bundle implements CompilerPassInterf
             $def = $container->getDefinition($id);
             foreach ($configs as $config) {
                 $metadata = $factory->getMetadataFor($config['for']);
-                $container->setAlias($id, 'repo.'.str_replace('\\', '_', $config['for']));
+                $container->setAlias($id, new Alias('repo.'.str_replace('\\', '_', $config['for']), true));
                 $map[$config['for']] = $def->getClass();
             }
         }
